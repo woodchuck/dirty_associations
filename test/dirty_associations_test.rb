@@ -448,5 +448,27 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     end
   end
   
+  test "using nested attributes, should detect all destroyed items" do
+    t = Task.first
+    t.enable_dirty_associations do
+      todo_attributes = {}
+      count = t.todos.count
+      t.todos.each do |todo|
+        todo_attributes[todo.id] = todo.attributes.merge('_destroy' => true)
+      end
+      
+      ids_removed = t.todos.map(&:id)
+      
+      t.update_attributes(:todos_attributes => todo_attributes)
+      assert t.todos_changed?
+      assert t.todos_added.empty?
+      assert t.todo_ids_removed?
+      assert_equal ids_removed, t.todo_ids_removed
+
+      t.todos(true)
+      assert t.todos.size, count-1
+    end
+  end
+  
   
 end

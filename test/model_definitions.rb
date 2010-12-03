@@ -14,6 +14,8 @@ class Task < ActiveRecord::Base
    belongs_to :preferred_user, :class_name => "User"
    
    keep_track_of :keywords, :todos, :blocking_tasks, :user, :preferred_user
+
+   accepts_nested_attributes_for :todos, :allow_destroy => true
 end 
 
 class User < ActiveRecord::Base 

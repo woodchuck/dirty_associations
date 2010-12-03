@@ -50,7 +50,8 @@ module DirtyAssociations
         
         # Return an array of primary keys of removed association records.
         def #{association_name_singular}_ids_removed
-          #{association_name_singular}_ids_were - #{association_name_singular}_ids
+          # HF #{association_name_singular}_ids_were - #{association_name_singular}_ids
+          #{association_name_singular}_ids_were - #{association_name}.find_all { |a| !a.new_record? && !a.destroyed? }.map(&:id)
         end
         
         # Boolean if records have been removed from this association since tracking began.
@@ -60,7 +61,8 @@ module DirtyAssociations
         
         # Return an array of primary keys of associations that have been added to this record since tracking began.
         def #{association_name_singular}_ids_added
-          #{association_name_singular}_ids - #{association_name_singular}_ids_were
+          # HF #{association_name_singular}_ids - #{association_name_singular}_ids_were
+          #{association_name}.find_all { |a| !a.new_record? && !a.destroyed? }.map(&:id) - #{association_name_singular}_ids_were
         end
         
         # Boolean if records have been added to this association.

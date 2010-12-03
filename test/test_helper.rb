@@ -55,6 +55,8 @@ def load_test_data
   @comment1_response = @comment1.responses.create(:body => "Comment response", :task => @t1)
   
   @t1.todos.create(:description => "New Todo Item", :open => true)
+  @t1.todos.create(:description => "New Todo Item", :open => true)
+  @t1.todos.create(:description => "New Todo Item", :open => true)
   
   @task_with_preferred_user = Task.create(:name => "Blocked Test", :user => @u1, :preferred_user => @preferred_user)
   @task_with_preferred_user.blocking_tasks << @t1
