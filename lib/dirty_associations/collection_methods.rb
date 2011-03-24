@@ -86,8 +86,7 @@ module DirtyAssociations
         # Not guaranteed to return all records, since some may have been deleted from the database in the interim.
         def #{association_name}_were
           primary_key = self.class.reflect_on_association(:#{association_name}).klass.primary_key
-          ids_string = #{association_name_singular}_ids_were  * ','
-          self.class.reflect_on_association(:#{association_name}).klass.all(:conditions => [primary_key + " IN (?)", ids_string])
+          self.class.reflect_on_association(:#{association_name}).klass.all(:conditions => [primary_key + " IN (?)", #{association_name_singular}_ids_were])
         end
         
         # Returns a collection of objects that have been removed from the current record.
