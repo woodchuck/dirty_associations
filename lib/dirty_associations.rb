@@ -23,4 +23,9 @@ module DirtyAssociations
   
   class InvalidAssociationError < ArgumentError; end;
   
+
+  class Railtie < ::Rails::Railtie
+    ActiveRecord::Base.extend DirtyAssociations
+  end
 end
+
