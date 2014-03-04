@@ -86,14 +86,14 @@ module DirtyAssociations
         # Not guaranteed to return all records, since some may have been deleted from the database in the interim.
         def #{association_name}_were
           primary_key = self.class.reflect_on_association(:#{association_name}).klass.primary_key
-          self.class.reflect_on_association(:#{association_name}).klass.all(:conditions => [primary_key + " IN (?)", #{association_name_singular}_ids_were])
+          self.class.reflect_on_association(:#{association_name}).klass.where(primary_key => #{association_name_singular}_ids_were)
         end
         
         # Returns a collection of objects that have been removed from the current record.
         # May not return all records if some were deleted in the interim.
         def #{association_name}_removed
           primary_key = self.class.reflect_on_association(:#{association_name}).klass.primary_key
-          self.class.reflect_on_association(:#{association_name}).klass.all(:conditions => { primary_key => #{association_name_singular}_ids_removed})
+          self.class.reflect_on_association(:#{association_name}).klass.where(primary_key => #{association_name_singular}_ids_removed)
         end
         
         # Returns a collection of objects that have been added to the current record since tracking began.
